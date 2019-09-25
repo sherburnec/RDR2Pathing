@@ -144,14 +144,14 @@ IC:6001, 2391:0
 HHR:6215, 2778:0
 BBB:982, 4488:0
 NGRH:5397, 3030:0
-Spoonbill:
-Heron:
-Loon:
-EagleE1:
-EagleE2:
-VultureE:
-HawkE1:
-HawkE2:
-EgretE:
-DuckE:
-GooseE:
+Spoonbill:6304, 2615:0
+Heron:5640, 2800:0
+Loon:3904, 2741:0
+EagleE1:3651, 2397:0
+EagleE2:3375, 840:0
+VultureE:6210, 1115:0
+HawkE1:4446, 1195:0
+HawkE2:3659, 590:0
+EgretE:6106, 2357:0
+DuckE:6277, 843:0
+GooseE:5597, 3466:0

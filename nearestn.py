@@ -8,13 +8,12 @@
 """
 
 import numpy as np
-import random
 import math
 import cv2
 
 path = []
 DV = 2
-L=4
+L=1
 dist_dict = {}
 def ree():
 	print("REEEEEEEEEEEEEEEEEEEEEEEEEEE")
@@ -37,7 +36,6 @@ def get_contents(file_name):
 def build_dist_dict(cities):
 	for c in cities:
 		dist_dict[c.name] = {}
-
 	for c in cities:
 		for d in cities:
 			dist_dict[c.name][d.name] = c.dist(d)
@@ -80,14 +78,19 @@ def best_route(points):
 	Compare each path's total distance and choose the lowest one
 	Returns the Path with the lowest total distance
 	"""
-	best_dist = None
+	best_dist = 100000
+	count = 0
 	for p in points:
-		path, total_dist = pathing(p, points)
+		temp_points = points[:]
+		path, total_dist = pathing(p, temp_points)
 		current_path = Path(path, total_dist)
 		if best_dist is None:
 			best_path = current_path
+			best_dist = current_path.dist
 		elif total_dist < best_dist:
 			best_path = current_path
+			best_dist = current_path.dist
+		count += 1
 	return best_path
 
 def pathing(p1, points): 
@@ -101,7 +104,7 @@ def pathing(p1, points):
 	trek.append(p1)
 	count = 0
 	while len(points) > 0:
-		if(L == 1):
+		if(len(points) >= L):
 			temp_point, dist = next_city(current, points, L)
 		else:
 			if len(points) > 1:
@@ -124,15 +127,15 @@ def next_city(p1, points, layer, total_dist=0):
 
 	Returns a City and int that is the closest
 	"""
-	distance = 10000 * layer
-	best_combined = 10000 * layer
+	distance = 100000 * layer
+	best_combined = 100000 * layer
 	front_runner = City()
-	if layer == L:
-		print(layer)
+	# if layer == L:
+	# 	print(layer)
 	for p in points:
 		temp = points[:]
 		p_dist = dist_dict[p1.name][p.name] + total_dist
-		if(layer > 1):
+		if layer > 1:
 			# temp_points = points
 			temp.remove(p)
 			boink, combined_dist = next_city(p, temp, layer - 1, p_dist)
@@ -140,12 +143,10 @@ def next_city(p1, points, layer, total_dist=0):
 				best_combined = combined_dist
 				distance = p_dist
 				front_runner = p
-		elif(layer == 1):
-			if(p_dist < distance):
+		else:
+			if p_dist < distance:
 				distance = p_dist
 				front_runner = p
-		else:
-			exit(1)
 	return front_runner, distance
 
 def draw_circles(img, point):
@@ -171,7 +172,7 @@ def draw_line(img, point1, point2):
 	img = cv2.line(img, p1, p2, c, t )
 	return img
 
-points = get_contents('tarot_swords.txt')
+points = get_contents('day1.txt')
 
 path = best_route(points)
 
@@ -190,4 +191,4 @@ for p in path.path: #
 		image = draw_line(image, prev, p)
 	prev = p
 
-cv2.imwrite('map_adjusted' + str(DV) + '.png', image)
+cv2.imwrite('map_adjusted' + str(DV) + '_' + str(L) +'.png', image)

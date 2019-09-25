@@ -17,7 +17,7 @@ def split_key(key_coords):
 	key = dict((items[i], coords[i]) for i in range(0, len(key_coords)))
 	return key
 
-key = get_contents("tarot_swords.txt")
+key = get_contents("day1.txt")
 
 problem_no_fit = mlrose.TSPOpt(length = len(key), coords = list(key.values()), maximize=False)
 best_state, best_fitness = mlrose.genetic_alg(problem_no_fit, pop_size=450, mutation_prob=0.14, max_attempts=900)
